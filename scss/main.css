@@ -1,0 +1,160 @@
+.app {
+  background-color: #f6f6f6;
+}
+
+.content {
+  max-width: 300px;
+  width: 100%;
+  margin: auto;
+  border: 1px solid red;
+}
+
+@media only screen and (max-width: 600px) {
+  .content {
+    max-width: 450px;
+  }
+}
+
+.navbar {
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  width: 100%;
+  height: 56px;
+  border: 1px solid yellow;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.navbar > ul {
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  list-style-type: none;
+}
+
+.new-post {
+  width: 100%;
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+}
+
+.new-post input {
+  width: 100%;
+  margin-right: 16px;
+  border: none;
+  font-size: 16;
+  padding: 6px 12px;
+}
+
+.feed {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.spotted {
+  width: 100%;
+  display: table;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  min-height: 200px;
+  position: relative;
+  text-align: center;
+  font-size: 12px;
+}
+
+.spotted-purple {
+  background-color: #ad3ada;
+  color: white;
+}
+
+.spotted-blue {
+  background-color: #3a55da;
+  color: white;
+}
+
+.spotted-more {
+  position: absolute;
+  right: 8px;
+  top: 8px;
+}
+
+.spotted-more > * {
+  fill: red;
+}
+
+.spotted-icon {
+  height: 16px;
+  cursor: pointer;
+}
+
+.spotted-text {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.spotted-likes {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.spotted-likes span {
+  margin-left: 6px;
+}
+
+.spotted-comments {
+  margin-right: 12px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+}
+
+.spotted-comments span {
+  margin-left: 6px;
+}
+
+.spotted-footer {
+  position: absolute;
+  right: 8px;
+  left: 8px;
+  bottom: 8px;
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.spotted-footer-actions {
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+}
+/*# sourceMappingURL=main.css.map */

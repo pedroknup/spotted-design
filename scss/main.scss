@@ -1,0 +1,114 @@
+.app {
+  background-color: #f6f6f6;
+}
+
+.content {
+  max-width: 300px;
+  width: 100%;
+  margin: auto;
+  border: 1px solid red;
+  @media only screen and (max-width: 600px) {
+    max-width: 450px;
+  }
+}
+
+.navbar {
+  display: inline-flex;
+  width: 100%;
+  height: 56px;
+  border: 1px solid yellow;
+  align-items: center;
+  justify-content: space-between;
+
+  > ul {
+    display: inline-flex;
+    list-style-type: none;
+  }
+}
+
+.new-post {
+  width: 100%;
+  input {
+    width: 100%;
+    margin-right: 16px;
+    border: none;
+    font-size: 16;
+    padding: 6px 12px;
+  }
+  display: inline-flex;
+}
+
+.feed {
+  display: flex;
+  flex-direction: column;
+}
+
+.spotted {
+  width: 100%;
+  display: table;
+  justify-content: space-between;
+  min-height: 200px;
+  position: relative;
+  text-align: center;
+  font-size: 12px;
+}
+
+.spotted-purple {
+  background-color: #ad3ada;
+  color: white;
+}
+.spotted-blue {
+  background-color: #3a55da;
+  color: white;
+}
+.spotted-more {
+  position: absolute;
+  right: 8px;
+  top: 8px;
+  > * {
+    fill: red;
+  }
+}
+
+.spotted-icon {
+  height: 16px;
+
+  cursor: pointer;
+}
+
+.spotted-text {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.spotted-likes {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  span {
+    margin-left: 6px;
+  }
+}
+
+.spotted-comments {
+  margin-right: 12px;
+  display: flex;
+  flex-direction: row;
+  span {
+    margin-left: 6px;
+  }
+}
+
+.spotted-footer {
+  position: absolute;
+  right: 8px;
+  left: 8px;
+  bottom: 8px;
+  display: inline-flex;
+  justify-content: space-between;
+  align-items: center;
+
+  &-actions {
+    display: inline-flex;
+  }
+}
