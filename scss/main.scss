@@ -1,28 +1,66 @@
+$primary-color: #fc3158;
+$dark-grey: #b4b6b6;
 .app {
-  background-color: #f6f6f6;
+  background-color: white;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  margin: 0;
+  position: fixed;
+  overflow: hidden;
+  min-width: 100vw;
+  min-height: 100vh;
 }
 
 .content {
   max-width: 300px;
   width: 100%;
   margin: auto;
-  border: 1px solid red;
   @media only screen and (max-width: 600px) {
-    max-width: 450px;
+    max-width: 100%;
   }
 }
 
 .navbar {
   display: inline-flex;
   width: 100%;
-  height: 56px;
-  border: 1px solid yellow;
+  height: 44px;
+  border-bottom: 1px solid $dark-grey;
+  background-color: #f7f7f7;
   align-items: center;
   justify-content: space-between;
+  z-index: 10;
 
   > ul {
     display: inline-flex;
     list-style-type: none;
+  }
+  &-title {
+    font-size: 17px;
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    z-index: 1;
+  }
+  &-button {
+    align-items: center;
+    z-index: 2;
+    display: flex;
+    cursor: pointer;
+    color: $primary-color;
+    &-icon {
+      height: 32px;
+      path {
+        fill: $primary-color;
+      }
+      &.back {
+        margin-left: -4px;
+        margin-right: -4px;
+      }
+      &.stroke {
+        path {
+          stroke: $primary-color;
+        }
+      }
+    }
   }
 }
 
@@ -41,7 +79,10 @@
 .feed {
   display: flex;
   flex-direction: column;
+  max-height: calc(100vh - 100px);
+  overflow: scroll;
 }
+
 
 .spotted {
   width: 100%;
@@ -51,64 +92,170 @@
   position: relative;
   text-align: center;
   font-size: 12px;
-}
 
-.spotted-purple {
-  background-color: #ad3ada;
-  color: white;
-}
-.spotted-blue {
-  background-color: #3a55da;
-  color: white;
-}
-.spotted-more {
-  position: absolute;
-  right: 8px;
-  top: 8px;
-  > * {
-    fill: red;
+  &.white-fg {
+    > * {
+      color: white !important;
+    }
+    svg {
+      path {
+        fill: white !important;
+      }
+    }
   }
-}
-
-.spotted-icon {
-  height: 16px;
-
-  cursor: pointer;
-}
-
-.spotted-text {
-  display: table-cell;
-  vertical-align: middle;
-}
-
-.spotted-likes {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  span {
-    margin-left: 6px;
+  &-black {
+    background: #45484d;
+    background: -moz-linear-gradient(top, #45484d 0%, #000000 100%);
+    background: -webkit-linear-gradient(top, #45484d 0%, #000000 100%);
+    background: linear-gradient(to bottom, #45484d 0%, #000000 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#45484d', endColorstr='#000000',GradientType=0 );
   }
-}
-
-.spotted-comments {
-  margin-right: 12px;
-  display: flex;
-  flex-direction: row;
-  span {
-    margin-left: 6px;
+  &-orange {
+    background: #f6e6b4;
+    background: -moz-linear-gradient(
+      top,
+      #f6e6b4 0%,
+      #ed9017 100%
+    ); /* FF3.6-15 */
+    background: -webkit-linear-gradient(
+      top,
+      #f6e6b4 0%,
+      #ed9017 100%
+    ); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom, #f6e6b4 0%, #ed9017 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f6e6b4', endColorstr='#ed9017',GradientType=0 ); /* IE6-9 */
   }
-}
 
-.spotted-footer {
-  position: absolute;
-  right: 8px;
-  left: 8px;
-  bottom: 8px;
-  display: inline-flex;
-  justify-content: space-between;
-  align-items: center;
+  &-purple {
+    background: #a90329;
+    background: -moz-linear-gradient(
+      top,
+      #a90329 0%,
+      #8f0222 44%,
+      #6d0019 100%
+    ); /* FF3.6-15 */
+    background: -webkit-linear-gradient(
+      top,
+      #a90329 0%,
+      #8f0222 44%,
+      #6d0019 100%
+    ); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(
+      to bottom,
+      #a90329 0%,
+      #8f0222 44%,
+      #6d0019 100%
+    );
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a90329', endColorstr='#6d0019',GradientType=0 ); /* IE6-9 */
 
-  &-actions {
+    color: white;
+  }
+  &-blue {
+    background: #87e0fd;
+    background: -moz-linear-gradient(
+      top,
+      #87e0fd 0%,
+      #53cbf1 40%,
+      #05abe0 100%
+    ); /* FF3.6-15 */
+    background: -webkit-linear-gradient(
+      top,
+      #87e0fd 0%,
+      #53cbf1 40%,
+      #05abe0 100%
+    ); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(
+      to bottom,
+      #87e0fd 0%,
+      #53cbf1 40%,
+      #05abe0 100%
+    );
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#87e0fd', endColorstr='#05abe0',GradientType=0 ); /* IE6-9 */
+
+    color: white;
+  }
+
+  &-more {
+    position: absolute;
+    right: 8px;
+    top: 8px;
+  }
+  &-icon {
+    height: 16px;
+    cursor: pointer;
+  }
+  &-text {
+    display: table-cell;
+    vertical-align: middle;
+  }
+  &-comments {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    span {
+      margin-left: 6px;
+    }
+  }
+  &-likes {
+    margin-right: 12px;
+    display: flex;
+    flex-direction: row;
+    span {
+      margin-left: 6px;
+    }
+  }
+  &-footer {
+    position: absolute;
+    right: 8px;
+    left: 8px;
+    bottom: 8px;
     display: inline-flex;
+    justify-content: space-between;
+    align-items: center;
+
+    &-actions {
+      display: inline-flex;
+    }
+  }
+}
+
+.footer {
+  height: 56px;
+  min-height: 56px;
+  background-color: #f7f7f7;
+  border-top: $dark-grey 1px solid;
+  color: $dark-grey;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  &-button {
+    width: 64px;
+    text-align: center;
+    height: 56px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 14px;
+    &-icon {
+      height: 24px;
+      margin: 8px 0 4px 0;
+      path {
+        fill: $dark-grey;
+      }
+    }
+    &.selected {
+      color: $primary-color;
+      font-weight: bold;
+
+      .footer-button-icon {
+        path {
+          fill: $primary-color !important;
+        }
+      }
+    }
   }
 }
