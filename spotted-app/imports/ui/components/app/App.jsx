@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import { withTracker } from "meteor/react-meteor-data";
 import ReactDOM from "react-dom";
-import { Tasks } from "../api/tasks.js";
-import Spotted from "./components/spotted/spotted.component.jsx";
+import { Tasks } from "../../../api/tasks.js";
+import Spotted from "../spotted/spotted.component.jsx";
 
 import "./app.css";
-import NavbarIOS from "./components/navbar-ios/navbar-ios.component.jsx";
-import FooterIos from "./components/footer-ios/footer-ios.component.jsx";
+import NavbarIOS from "../navbar-ios/navbar-ios.component.jsx";
+import FooterIos from "../footer-ios/footer-ios.component.jsx";
 // App component - represents the whole app
 class App extends Component {
   renderTasks() {
