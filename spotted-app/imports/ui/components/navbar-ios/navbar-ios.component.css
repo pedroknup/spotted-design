@@ -22,6 +22,16 @@
   list-style-type: none;
 }
 
+.navbar-create-post {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+}
+
+.navbar-create-post svg {
+  height: 24px;
+}
+
 .navbar-title {
   font-size: 17px;
   position: absolute;

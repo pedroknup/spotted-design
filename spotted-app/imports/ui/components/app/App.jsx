@@ -7,6 +7,11 @@ import Spotted from "../spotted/spotted.component.jsx";
 import "./app.css";
 import NavbarIOS from "../navbar-ios/navbar-ios.component.jsx";
 import FooterIos from "../footer-ios/footer-ios.component.jsx";
+import { bindActionCreators } from "redux";
+
+import * as locationActions from "../../redux/actions/index";
+import { connect } from "react-redux";
+
 // App component - represents the whole app
 class App extends Component {
   renderTasks() {
@@ -30,18 +35,45 @@ class App extends Component {
     ReactDOM.findDOMNode(this.refs.textInput).value = "";
   }
   render() {
+    const { currentLocation, history } = this.props;
+    const { changeLocation, previousPage } = this.props.actions;
     return (
       <div className="app">
-        <NavbarIOS />
+        <NavbarIOS
+          backButtonCallback={() => {
+            previousPage();
+          }}
+          hasActionButton={currentLocation.hasActionButton}
+          backButton={currentLocation.backButton}
+          title={currentLocation.page}
+        />
         <div className="content">{this.renderTasks()}</div>
+        <code style={{ wordBreak: "break-all", width: "100%" }}>
+          {JSON.stringify(history)}
+        </code>
+        
         <FooterIos />
       </div>
     );
   }
 }
 
-export default withTracker(() => {
-  return {
-    tasks: Tasks.find({}, { sort: { createdAt: -1 } }).fetch()
-  };
-})(App);
+function mapStateToProps(state) {
+  const newState =  {currentLocation, history} = state;
+  return { ...newState };
+}
+
+function mapDispatchToProps(dispatch) {
+  return { actions: bindActionCreators(locationActions, dispatch) };
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(
+  withTracker(() => {
+    return {
+      tasks: Tasks.find({}, { sort: { createdAt: -1 } }).fetch()
+    };
+  })(App)
+);
