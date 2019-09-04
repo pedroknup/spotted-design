@@ -24,8 +24,12 @@
 
 .navbar-create-post {
   position: absolute;
+  -webkit-box-sizing: boder;
+          box-sizing: boder;
+  left: auto;
   right: 12px;
   top: 12px;
+  z-index: 2;
 }
 
 .navbar-create-post svg {

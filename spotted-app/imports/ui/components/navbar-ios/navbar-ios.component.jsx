@@ -5,11 +5,12 @@ export default NavbarIOS = ({
   backButtonCallback,
   title,
   backButton,
+  goToNewSpottedPage,
   hasActionButton
 }) => {
   return (
     <div className="navbar">
-      {backButton  && (
+      {backButton && (
         <div
           onClick={() => {
             if (backButtonCallback) backButtonCallback();
@@ -30,7 +31,12 @@ export default NavbarIOS = ({
       <div className="navbar-title">{title}</div>
 
       {hasActionButton && (
-        <div className="navbar-create-post">
+        <div
+          onClick={() => {
+            if (goToNewSpottedPage) goToNewSpottedPage();
+          }}
+          className="navbar-create-post"
+        >
           <svg
             className="navbar-button-icon"
             xmlns="http://www.w3.org/2000/svg"

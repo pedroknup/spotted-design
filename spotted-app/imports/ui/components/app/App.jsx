@@ -3,6 +3,8 @@ import { withTracker } from "meteor/react-meteor-data";
 import ReactDOM from "react-dom";
 import { Tasks } from "../../../api/tasks.js";
 import Spotted from "../spotted/spotted.component.jsx";
+import NewSpotted from "../new-spotted/new-spotted.component.jsx";
+import SpottedDetails from "../spotted-details/spotted-details.component.jsx";
 
 import "./app.css";
 import NavbarIOS from "../navbar-ios/navbar-ios.component.jsx";
@@ -11,14 +13,22 @@ import { bindActionCreators } from "redux";
 
 import * as locationActions from "../../redux/actions/index";
 import { connect } from "react-redux";
+import { NEW_SPOTTED } from "../../redux/constants/pages.js";
 
 // App component - represents the whole app
 class App extends Component {
-  renderTasks() {
+  renderSpotteds() {
     // return this.props.tasks.map(task => <Task key={task._id} task={task} />);
     return this.props.tasks.map((task, id) => (
       <Spotted key={id} text="text" source="source" />
     ));
+  }
+
+  renderSpotted() {
+    return <SpottedDetails />;
+  }
+  renderNewSpotted() {
+    return <NewSpotted />;
   }
   handleSubmit(event) {
     event.preventDefault();
@@ -46,20 +56,29 @@ class App extends Component {
           hasActionButton={currentLocation.hasActionButton}
           backButton={currentLocation.backButton}
           title={currentLocation.page}
+          goToNewSpottedPage={() => {
+            changeLocation(NEW_SPOTTED);
+          }}
         />
-        <div className="content">{this.renderTasks()}</div>
-        <code style={{ wordBreak: "break-all", width: "100%" }}>
-          {JSON.stringify(history)}
-        </code>
-        
-        <FooterIos />
+        <div className="content">
+          {currentLocation.id == "home" ? (
+            this.renderSpotteds()
+          ) : currentLocation.id == "spotted" ? (
+            this.renderSpotted()
+          ) : currentLocation.id == "newSpotted" ? (
+            this.renderNewSpotted()
+          ) : (
+            <div>404</div>
+          )}
+        </div>
+        {currentLocation.id == "home" && <FooterIos />}
       </div>
     );
   }
 }
 
 function mapStateToProps(state) {
-  const newState =  {currentLocation, history} = state;
+  const newState = ({ currentLocation, history } = state);
   return { ...newState };
 }
 

@@ -1,0 +1,294 @@
+.new-spotted-form {
+  padding: 16px;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+.new-spotted-form input,
+.new-spotted-form textarea {
+  padding: 16px 8px;
+  background-color: #f9f9f9;
+  border: 1px solid #b4b6b6;
+  border-radius: 2px;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  width: 100%;
+  font-size: 16px;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+.new-spotted-form .color-selector {
+  margin: 16px 0;
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  width: 100%;
+}
+
+.new-spotted-form .color-selector > * {
+  height: 30px;
+  width: 30px;
+  min-height: 30px;
+  min-width: 30px;
+  border-radius: 50%;
+  border: 2px solid RGBA(0, 0, 0, 0.4);
+}
+
+.new-spotted-form .color-selector > * > * {
+  height: 28px;
+  width: 28px;
+  min-height: 28px;
+  min-width: 28px;
+  border-radius: 50%;
+  border: 1px solid white;
+}
+
+.new-spotted-form .color-selector .random {
+  font-size: 24px;
+  text-align: center;
+  background: #f90000;
+  background: -webkit-gradient(linear, left top, left bottom, from(#f90000), color-stop(51%, #20f700), to(#1800f7));
+  background: linear-gradient(to bottom, #f90000 0%, #20f700 51%, #1800f7 100%);
+  color: white;
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f90000', endColorstr='#1800f7',GradientType=0 );
+}
+
+.new-spotted-form .color-selector .red {
+  background-color: red;
+}
+
+.new-spotted-form .color-selector .green {
+  background-color: green;
+}
+
+.new-spotted-form .color-selector .blue {
+  background-color: blue;
+}
+
+.new-spotted-form .color-selector .yellow {
+  background-color: yellow;
+}
+
+.new-spotted-form .color-selector .white {
+  background-color: white;
+}
+
+.new-spotted-form .color-selector .pink {
+  background-color: white;
+}
+
+.new-spotted-form .color-selector .purple {
+  background-color: purple;
+}
+
+.new-spotted-form .color-selector .orange {
+  background-color: orange;
+}
+
+.new-spotted-form .color-selector .black {
+  background-color: black;
+}
+
+.policy {
+  color: RGBA(0, 0, 0, 0.4);
+  text-align: center;
+  font-size: 14px;
+  margin-left: 16px;
+  margin-right: 16px;
+}
+
+.post-spotted {
+  position: fixed;
+  left: 16px;
+  right: 16px;
+  bottom: 16px;
+}
+
+.post-spotted button {
+  margin-top: 16px;
+  border-radius: 4px;
+  background-color: #fc3158;
+  color: white;
+  padding: 12px;
+  font-size: 18px;
+  width: 100%;
+  border-color: transparent;
+}
+
+.new-spotted {
+  margin-bottom: 16px;
+  width: 100%;
+  display: table;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  min-height: 200px;
+  position: relative;
+  text-align: center;
+  font-size: 24px;
+}
+
+.new-spotted.white-fg > * {
+  color: white !important;
+}
+
+.new-spotted.white-fg svg path {
+  fill: white !important;
+}
+
+.new-spotted-white {
+  background: #f2f5f6;
+  background: -webkit-gradient(linear, left top, left bottom, from(#f2f5f6), color-stop(37%, #e3eaed), to(#c8d7dc));
+  background: linear-gradient(to bottom, #f2f5f6 0%, #e3eaed 37%, #c8d7dc 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f2f5f6', endColorstr='#c8d7dc',GradientType=0 );
+}
+
+.new-spotted-pink {
+  background: #fb83fa;
+  background: -webkit-gradient(linear, left top, left bottom, from(#fb83fa), to(#e93cec));
+  background: linear-gradient(to bottom, #fb83fa 0%, #e93cec 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fb83fa', endColorstr='#e93cec',GradientType=0 );
+}
+
+.new-spotted-red {
+  background: #ff3019;
+  background: -webkit-gradient(linear, left top, left bottom, from(#ff3019), to(#cf0404));
+  background: linear-gradient(to bottom, #ff3019 0%, #cf0404 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ff3019', endColorstr='#cf0404',GradientType=0 );
+}
+
+.new-spotted-black {
+  background: #45484d;
+  background: -webkit-gradient(linear, left top, left bottom, from(#45484d), to(#000000));
+  background: linear-gradient(to bottom, #45484d 0%, #000000 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#45484d', endColorstr='#000000',GradientType=0 );
+}
+
+.new-spotted-orange {
+  background: #f6e6b4;
+  /* FF3.6-15 */
+  /* Chrome10-25,Safari5.1-6 */
+  background: -webkit-gradient(linear, left top, left bottom, from(#f6e6b4), to(#ed9017));
+  background: linear-gradient(to bottom, #f6e6b4 0%, #ed9017 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f6e6b4', endColorstr='#ed9017',GradientType=0 );
+  /* IE6-9 */
+}
+
+.new-spotted-green {
+  background: #d1f480;
+  background: -webkit-gradient(linear, left top, left bottom, from(#d1f480), color-stop(44%, #83e63c), to(#19a612));
+  background: linear-gradient(to bottom, #d1f480 0%, #83e63c 44%, #19a612 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d1f480', endColorstr='#19a612',GradientType=0 );
+}
+
+.new-spotted-purple {
+  background: #a90329;
+  /* FF3.6-15 */
+  /* Chrome10-25,Safari5.1-6 */
+  background: -webkit-gradient(linear, left top, left bottom, from(#a90329), color-stop(44%, #8f0222), to(#6d0019));
+  background: linear-gradient(to bottom, #a90329 0%, #8f0222 44%, #6d0019 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a90329', endColorstr='#6d0019',GradientType=0 );
+  /* IE6-9 */
+  color: white;
+}
+
+.new-spotted-blue {
+  background: #87e0fd;
+  /* FF3.6-15 */
+  /* Chrome10-25,Safari5.1-6 */
+  background: -webkit-gradient(linear, left top, left bottom, from(#87e0fd), color-stop(40%, #53cbf1), to(#05abe0));
+  background: linear-gradient(to bottom, #87e0fd 0%, #53cbf1 40%, #05abe0 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#87e0fd', endColorstr='#05abe0',GradientType=0 );
+  /* IE6-9 */
+  color: white;
+}
+
+.new-spotted-more {
+  position: absolute;
+  right: 8px;
+  top: 8px;
+}
+
+.new-spotted-icon {
+  height: 16px;
+  cursor: pointer;
+}
+
+.new-spotted-text {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.new-spotted-text input {
+  border: none;
+  font-size: 16px;
+  background-color: transparent;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  padding: 16px;
+  color: white;
+}
+
+.new-spotted-comments {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.new-spotted-comments span {
+  margin-left: 6px;
+}
+
+.new-spotted-likes {
+  margin-right: 12px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+}
+
+.new-spotted-likes span {
+  margin-left: 6px;
+}
+
+.new-spotted-footer {
+  position: absolute;
+  right: 8px;
+  left: 8px;
+  bottom: 8px;
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.new-spotted-footer-actions {
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+}
+/*# sourceMappingURL=new-spotted.component.css.map */
