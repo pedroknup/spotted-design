@@ -83,7 +83,6 @@ $dark-grey: #b4b6b6;
   overflow: scroll;
 }
 
-
 .spotted {
   width: 100%;
   display: table;
@@ -102,6 +101,43 @@ $dark-grey: #b4b6b6;
         fill: white !important;
       }
     }
+  }
+  &-white {
+    background: #f2f5f6;
+
+    background: -moz-linear-gradient(
+      top,
+      #f2f5f6 0%,
+      #e3eaed 37%,
+      #c8d7dc 100%
+    );
+    background: -webkit-linear-gradient(
+      top,
+      #f2f5f6 0%,
+      #e3eaed 37%,
+      #c8d7dc 100%
+    );
+    background: linear-gradient(
+      to bottom,
+      #f2f5f6 0%,
+      #e3eaed 37%,
+      #c8d7dc 100%
+    );
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f2f5f6', endColorstr='#c8d7dc',GradientType=0 );
+  }
+  &-pink {
+    background: #fb83fa;
+    background: -moz-linear-gradient(top, #fb83fa 0%, #e93cec 100%);
+    background: -webkit-linear-gradient(top, #fb83fa 0%, #e93cec 100%);
+    background: linear-gradient(to bottom, #fb83fa 0%, #e93cec 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fb83fa', endColorstr='#e93cec',GradientType=0 );
+  }
+  &-red {
+    background: #ff3019;
+    background: -moz-linear-gradient(top, #ff3019 0%, #cf0404 100%);
+    background: -webkit-linear-gradient(top, #ff3019 0%, #cf0404 100%);
+    background: linear-gradient(to bottom, #ff3019 0%, #cf0404 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ff3019', endColorstr='#cf0404',GradientType=0 );
   }
   &-black {
     background: #45484d;
@@ -124,6 +160,28 @@ $dark-grey: #b4b6b6;
     ); /* Chrome10-25,Safari5.1-6 */
     background: linear-gradient(to bottom, #f6e6b4 0%, #ed9017 100%);
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f6e6b4', endColorstr='#ed9017',GradientType=0 ); /* IE6-9 */
+  }
+  &-green {
+    background: #d1f480;
+    background: -moz-linear-gradient(
+      top,
+      #d1f480 0%,
+      #83e63c 44%,
+      #19a612 100%
+    );
+    background: -webkit-linear-gradient(
+      top,
+      #d1f480 0%,
+      #83e63c 44%,
+      #19a612 100%
+    );
+    background: linear-gradient(
+      to bottom,
+      #d1f480 0%,
+      #83e63c 44%,
+      #19a612 100%
+    );
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d1f480', endColorstr='#19a612',GradientType=0 );
   }
 
   &-purple {
