@@ -1,11 +1,14 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
+import "./spotted.component.css";
 
 export default class Spotted extends Component {
   render() {
+    const { color, text, id, source, comments, likes, isLiked } = this.props;
     return (
-      <div>
+      <div className="spotted spotted-purple white-fg">
         <svg
-          class="spotted-icon spotted-more"
+          className="spotted-icon spotted-more"
           version="1.1"
           id="Capa_1"
           xmlns="http://www.w3.org/2000/svg"
@@ -24,19 +27,18 @@ export default class Spotted extends Component {
           </g>
         </svg>
 
-        <span class="spotted-text">Spotted text</span>
-        <div class="spotted-footer">
-          <div class="spotted-footer-actions">
-            <span class="spotted-likes">
+        <span className="spotted-text">{text}</span>
+        <div className="spotted-footer">
+          <div className="spotted-footer-actions">
+            <span className="spotted-likes">
               <svg
-                class="spotted-icon"
+                className="spotted-icon"
                 version="1.1"
                 id="Capa_1"
                 xmlns="http://www.w3.org/2000/svg"
                 x="0px"
                 y="0px"
                 viewBox="0 0 51.997 51.997"
-                style="enable-background:new 0 0 51.997 51.997;"
               >
                 <path
                   d="M51.911,16.242C51.152,7.888,45.239,1.827,37.839,1.827c-4.93,0-9.444,2.653-11.984,6.905
@@ -46,15 +48,14 @@ export default class Spotted extends Component {
                 />
               </svg>
             </span>
-            <span class="spotted-comments">
+            <span className="spotted-comments">
               <svg
-                class="spotted-icon"
+                className="spotted-icon"
                 version="1.1"
                 xmlns="http://www.w3.org/2000/svg"
                 x="0px"
                 y="0px"
                 viewBox="0 0 16.087 16.087"
-                style="enable-background:new 0 0 16.087 16.087;"
               >
                 <g>
                   <g>
@@ -73,9 +74,19 @@ export default class Spotted extends Component {
               </svg>
             </span>
           </div>
-          <span class="spotted-distance">Less than 2 km</span>
+          <span className="spotted-distance">{source}</span>
         </div>
       </div>
     );
   }
 }
+
+Spotted.propTypes = {
+  color: PropTypes.string,
+  text: PropTypes.string,
+  _id: PropTypes.string,
+  source: PropTypes.string,
+  comments: PropTypes.object,
+  likes: PropTypes.number,
+  isLiked: PropTypes.bool
+};
