@@ -2,11 +2,13 @@ import React from "react";
 import PropTypes from "prop-types";
 import "./new-spotted.component.css";
 import { bindActionCreators } from "redux";
-import { Tasks } from "../../../api/tasks.js";
+
+// import { Spotteds } from "../../../api/spotteds.js";
 import * as locationActions from "../../redux/actions/index";
 import { connect } from "react-redux";
 import { withTracker } from "meteor/react-meteor-data";
 import { PAGE_SPOTTED, PAGE_HOME } from "../../redux/constants/pages";
+import Spotteds from "../../../api/spotteds";
 
 const getRandomColor = () => {
   const colors = [
@@ -26,6 +28,23 @@ const getRandomColor = () => {
   const randIndex = Math.floor(Math.random() * (colors.length ));
   return colors[randIndex];
 };
+
+
+
+const postSpotted =( text,color, source) => {
+  
+    Spotteds.insert({
+      color, 
+      text, 
+      source, 
+      comments: [], 
+      likes: [],
+      isLiked: false,
+      createdAt: new Date(), // current time
+    });
+    alert("Success!")
+
+}
 
 const NewSpotted = props => {
   const [text, setText] = React.useState("");
@@ -195,7 +214,9 @@ const NewSpotted = props => {
           By proceeding you are stating that you agree to the terms of use and
           privacy policy. We guarantee absolute anonymity.
         </div>
-        <button>Publish</button>
+        <button onClick={()=>{
+          postSpotted(text, colorClass, "source")
+        }}>Publish</button>
       </div>
     </div>
   );
@@ -225,7 +246,7 @@ export default connect(
 )(
   withTracker(() => {
     return {
-      tasks: Tasks.find({}, { sort: { createdAt: -1 } }).fetch()
+      tasks: []
     };
   })(NewSpotted)
 );

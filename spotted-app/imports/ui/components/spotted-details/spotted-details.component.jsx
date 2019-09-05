@@ -2,11 +2,13 @@ import React from "react";
 import PropTypes from "prop-types";
 import "./spotted-details.component.css";
 import { bindActionCreators } from "redux";
-import { Tasks } from "../../../api/tasks.js";
+
 import * as locationActions from "../../redux/actions/index";
 import { connect } from "react-redux";
 import { withTracker } from "meteor/react-meteor-data";
 import { PAGE_SPOTTED, PAGE_HOME } from "../../redux/constants/pages";
+
+
 
 const SpottedDetails = props => {
   const { color, text, id, source, comments, likes, isLiked } = props;
@@ -128,7 +130,7 @@ export default connect(
 )(
   withTracker(() => {
     return {
-      tasks: Tasks.find({}, { sort: { createdAt: -1 } }).fetch()
+      tasks: []
     };
   })(SpottedDetails)
 );

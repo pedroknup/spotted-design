@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { withTracker } from "meteor/react-meteor-data";
 import ReactDOM from "react-dom";
-import { Tasks } from "../../../api/tasks.js";
 import Spotted from "../spotted/spotted.component.jsx";
 import NewSpotted from "../new-spotted/new-spotted.component.jsx";
 import SpottedDetails from "../spotted-details/spotted-details.component.jsx";
@@ -14,13 +13,25 @@ import { bindActionCreators } from "redux";
 import * as locationActions from "../../redux/actions/index";
 import { connect } from "react-redux";
 import { NEW_SPOTTED } from "../../redux/constants/pages.js";
+import Spotteds from "../../../api/spotteds.js";
 
 // App component - represents the whole app
+
+console.log(Spotteds)
 class App extends Component {
   renderSpotteds() {
     // return this.props.tasks.map(task => <Task key={task._id} task={task} />);
-    return this.props.tasks.map((task, id) => (
-      <Spotted key={id} text="text" source="source" />
+    return this.props.spotteds.map((spotted, id) => (
+      <Spotted
+        key={id}
+        text={spotted.text}
+        source={spotted.source}
+        color={spotted.color}
+        id={spotted.id}
+        comments={spotted.comments}
+        likes={spotted.likes}
+        isLiked={spotted.isLiked}
+      />
     ));
   }
 
@@ -33,16 +44,6 @@ class App extends Component {
   handleSubmit(event) {
     event.preventDefault();
 
-    // Find the text field via the React ref
-    const text = ReactDOM.findDOMNode(this.refs.textInput).value.trim();
-
-    Tasks.insert({
-      text,
-      createdAt: new Date() // current time
-    });
-
-    // Clear form
-    ReactDOM.findDOMNode(this.refs.textInput).value = "";
   }
   render() {
     const { currentLocation, history } = this.props;
@@ -92,7 +93,7 @@ export default connect(
 )(
   withTracker(() => {
     return {
-      tasks: Tasks.find({}, { sort: { createdAt: -1 } }).fetch()
+      spotteds: Spotteds.find({}).fetch(),
     };
   })(App)
 );

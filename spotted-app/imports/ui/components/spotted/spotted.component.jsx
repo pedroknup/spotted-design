@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import "./spotted.component.css";
 import { bindActionCreators } from "redux";
-import { Tasks } from "../../../api/tasks.js";
+
 import * as locationActions from "../../redux/actions/index";
 import { connect } from "react-redux";
 import { withTracker } from "meteor/react-meteor-data";
@@ -28,9 +28,14 @@ const Spotted = props => {
       ...spottedPage
     });
   };
+  console.log(props);
 
   return (
-    <div onClick={openSpotted} className="spotted spotted-purple white-fg">
+    <div
+      onClick={openSpotted}
+      className={`spotted spotted-${color} ${color != "white" &&
+        "white-fg"}`}
+    >
       <svg
         className="spotted-icon spotted-more"
         version="1.1"
@@ -128,7 +133,7 @@ export default connect(
 )(
   withTracker(() => {
     return {
-      tasks: Tasks.find({}, { sort: { createdAt: -1 } }).fetch()
+      tasks: []
     };
   })(Spotted)
 );
