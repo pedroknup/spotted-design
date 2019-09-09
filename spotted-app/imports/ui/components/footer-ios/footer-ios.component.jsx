@@ -4,7 +4,7 @@ import "./footer-ios.component.css"
 export default class FooterIos extends Component {
   render() {
     return (
-      <div className="footer">
+      <div style={{paddingBottom:"30px"}} className="footer">
         <div className="footer-button selected">
           <svg
             className="footer-button-icon "

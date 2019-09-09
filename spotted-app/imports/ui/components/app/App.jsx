@@ -13,9 +13,14 @@ import { bindActionCreators } from "redux";
 
 import * as locationActions from "../../redux/actions/index";
 import { connect } from "react-redux";
-import { NEW_SPOTTED } from "../../redux/constants/pages.js";
+import { NEW_SPOTTED, PAGE_SPOTTED } from "../../redux/constants/pages.js";
 import Spotteds from "../../../api/spotteds.js";
 import TabAndroid from "../tab-android/tab-android.component.jsx";
+import {
+  checkBridge,
+  getSystemInfo,
+  getDeviceId
+} from "../../util/react-native-bridge.js";
 
 // App component - represents the whole app
 
@@ -25,6 +30,7 @@ class App extends Component {
     this.state = {
       page: 0,
       pageSize: 10,
+      isNewIOS: false,
       os: "ios"
     };
   }
@@ -45,7 +51,30 @@ class App extends Component {
   }
 
   componentDidMount() {
-    console.log(this.props.spotteds);
+    // console.log(this.props.spotteds);
+    if (checkBridge()) {
+      let self = this;
+      window.webViewBridge.send(
+        "getDeviceId",
+        "",
+        function(res) {
+          const result = JSON.stringify(res);
+          if (result.includes("iPhone")) {
+            const iOSVersion = result.substring(7, result.length - 3);
+            if (parseInt(iOSVersion.replace(',','.')) > 10.0){
+              self.setState({isNewIOS: true})
+            }
+            this.setState({os:"ios"})
+          }
+        },
+        function(err) {
+          alert("lol", err);
+        }
+      );
+      // if (deviceId.includes("iphone")) {
+      //   alert("is IOS");
+      // }
+    }
   }
   renderSpotted() {
     return <SpottedDetails />;
@@ -59,9 +88,9 @@ class App extends Component {
   render() {
     const { currentLocation, history } = this.props;
     const { changeLocation, previousPage } = this.props.actions;
-    const { page, pageSize, os } = this.state;
+    const { page, pageSize, os, isNewIOS } = this.state;
     return (
-      <div className="app">
+      <div style={{paddingTop: isNewIOS ? "30px" : "0"}} className="app">
         <Navbar
           backButtonCallback={() => {
             previousPage();
