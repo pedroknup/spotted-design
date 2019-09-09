@@ -17,8 +17,15 @@ import Spotteds from "../../../api/spotteds.js";
 
 // App component - represents the whole app
 
-console.log(Spotteds)
+console.log(Spotteds);
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      page: 0,
+      pageSize: 10
+    };
+  }
   renderSpotteds() {
     // return this.props.tasks.map(task => <Task key={task._id} task={task} />);
     return this.props.spotteds.map((spotted, id) => (
@@ -35,6 +42,9 @@ class App extends Component {
     ));
   }
 
+  componentDidMount() {
+    console.log(this.props.spotteds);
+  }
   renderSpotted() {
     return <SpottedDetails />;
   }
@@ -43,11 +53,11 @@ class App extends Component {
   }
   handleSubmit(event) {
     event.preventDefault();
-
   }
   render() {
     const { currentLocation, history } = this.props;
     const { changeLocation, previousPage } = this.props.actions;
+    const { page, pageSize } = this.state;
     return (
       <div className="app">
         <NavbarIOS
@@ -61,6 +71,9 @@ class App extends Component {
             changeLocation(NEW_SPOTTED);
           }}
         />
+        <div style={{ position: "fixed", top: 46, left: 16, backgroundColor: "red", zIndex: 1000, color: "white" }}>
+          {this.props.isLoading ? "Loading" : "Loaded"}
+        </div>
         <div className="content">
           {currentLocation.id == "home" ? (
             this.renderSpotteds()
@@ -91,9 +104,20 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(
+  // withTracker(() => {
+  //   return {
+  //     spotteds: Spotteds.find({}).fetch(),
+  //   };
+  // })(App)
   withTracker(() => {
+    const subscriptionHandle = Meteor.subscribe("spotteds", {
+      pageSize: 10,
+      page: 0
+    });
+
     return {
-      spotteds: Spotteds.find({}).fetch(),
+      isLoading: !subscriptionHandle.ready(),
+      spotteds: Spotteds.find({},{ sort: { createdAt: -1 } }).fetch()
     };
   })(App)
 );

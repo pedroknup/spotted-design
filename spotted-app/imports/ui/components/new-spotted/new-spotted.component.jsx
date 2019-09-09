@@ -12,39 +12,36 @@ import Spotteds from "../../../api/spotteds";
 
 const getRandomColor = () => {
   const colors = [
-    'yellow',
-    'yellow-orange',
-    'orange',
-    'orange-red',
-    'red',
-    'red-purple',
-    'purple-blue',
-    'purple',
-    'green',
-    'green-yellow',
-    'white',
-    'black'
+    "yellow",
+    "yellow-orange",
+    "orange",
+    "orange-red",
+    "red",
+    "red-purple",
+    "purple-blue",
+    "purple",
+    "green",
+    "green-yellow",
+    "white",
+    "black"
   ];
-  const randIndex = Math.floor(Math.random() * (colors.length ));
+  const randIndex = Math.floor(Math.random() * colors.length);
   return colors[randIndex];
 };
 
-
-
-const postSpotted =( text,color, source) => {
-  
-    Spotteds.insert({
-      color, 
-      text, 
-      source, 
-      comments: [], 
-      likes: [],
-      isLiked: false,
-      createdAt: new Date(), // current time
-    });
-    alert("Success!")
-
-}
+const postSpotted = (text, color, source, actions) => {
+  Spotteds.insert({
+    color,
+    text,
+    source,
+    comments: [],
+    likes: [],
+    isLiked: false,
+    createdAt: new Date() // current time
+  });
+  alert("Success!");
+  actions.previousPage();
+};
 
 const NewSpotted = props => {
   const [text, setText] = React.useState("");
@@ -72,8 +69,8 @@ const NewSpotted = props => {
   return (
     <div>
       <div
-        className={`new-spotted new-spotted-${colorClass} ${colorClass != "white" &&
-          "white-fg"}`}
+        className={`new-spotted new-spotted-${colorClass} ${colorClass !=
+          "white" && "white-fg"}`}
       >
         <div className="new-spotted-text">{text ? text : "Preview"}</div>
       </div>
@@ -214,9 +211,13 @@ const NewSpotted = props => {
           By proceeding you are stating that you agree to the terms of use and
           privacy policy. We guarantee absolute anonymity.
         </div>
-        <button onClick={()=>{
-          postSpotted(text, colorClass, "source")
-        }}>Publish</button>
+        <button
+          onClick={() => {
+            postSpotted(text, colorClass, "source", props.actions);
+          }}
+        >
+          Publish
+        </button>
       </div>
     </div>
   );
