@@ -6,24 +6,26 @@ import NewSpotted from "../new-spotted/new-spotted.component.jsx";
 import SpottedDetails from "../spotted-details/spotted-details.component.jsx";
 
 import "./app.css";
-import NavbarIOS from "../navbar-ios/navbar-ios.component.jsx";
+
 import FooterIos from "../footer-ios/footer-ios.component.jsx";
+import Navbar from "../navbar/navbar.component.jsx";
 import { bindActionCreators } from "redux";
 
 import * as locationActions from "../../redux/actions/index";
 import { connect } from "react-redux";
 import { NEW_SPOTTED } from "../../redux/constants/pages.js";
 import Spotteds from "../../../api/spotteds.js";
+import TabAndroid from "../tab-android/tab-android.component.jsx";
 
 // App component - represents the whole app
 
-console.log(Spotteds);
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       page: 0,
-      pageSize: 10
+      pageSize: 10,
+      os: "ios"
     };
   }
   renderSpotteds() {
@@ -57,13 +59,14 @@ class App extends Component {
   render() {
     const { currentLocation, history } = this.props;
     const { changeLocation, previousPage } = this.props.actions;
-    const { page, pageSize } = this.state;
+    const { page, pageSize, os } = this.state;
     return (
       <div className="app">
-        <NavbarIOS
+        <Navbar
           backButtonCallback={() => {
             previousPage();
           }}
+          os={os}
           hasActionButton={currentLocation.hasActionButton}
           backButton={currentLocation.backButton}
           title={currentLocation.page}
@@ -71,8 +74,19 @@ class App extends Component {
             changeLocation(NEW_SPOTTED);
           }}
         />
-        <div style={{ position: "fixed", top: 46, left: 16, backgroundColor: "red", zIndex: 1000, color: "white" }}>
-          {this.props.isLoading ? "Loading" : "Loaded"}
+        {currentLocation.id == "home" && os === "android" && <TabAndroid />}
+        <div
+          style={{
+            position: "fixed",
+            // top: 56,
+            top: 100,
+            left: 16,
+            backgroundColor: "red",
+            zIndex: 1000,
+            color: "white"
+          }}
+        >
+          {/* {this.props.isLoading ? "Loading" : "Loaded"} */}
         </div>
         <div className="content">
           {currentLocation.id == "home" ? (
@@ -85,7 +99,7 @@ class App extends Component {
             <div>404</div>
           )}
         </div>
-        {currentLocation.id == "home" && <FooterIos />}
+        {currentLocation.id == "home" && os === "ios" && <FooterIos />}
       </div>
     );
   }
@@ -117,7 +131,7 @@ export default connect(
 
     return {
       isLoading: !subscriptionHandle.ready(),
-      spotteds: Spotteds.find({},{ sort: { createdAt: -1 } }).fetch()
+      spotteds: Spotteds.find({}, { sort: { createdAt: -1 } }).fetch()
     };
   })(App)
 );
