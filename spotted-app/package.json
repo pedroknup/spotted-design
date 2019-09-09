@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.3.4",
+    "elastic-scroll-polyfill": "^2.1.0",
     "meteor-node-stubs": "^0.4.1",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",

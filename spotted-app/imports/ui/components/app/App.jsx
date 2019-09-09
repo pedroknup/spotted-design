@@ -15,6 +15,7 @@ import * as locationActions from "../../redux/actions/index";
 import { connect } from "react-redux";
 import { NEW_SPOTTED, PAGE_SPOTTED } from "../../redux/constants/pages.js";
 import Spotteds from "../../../api/spotteds.js";
+import elasticScroll from "elastic-scroll-polyfill";
 import TabAndroid from "../tab-android/tab-android.component.jsx";
 import {
   checkBridge,
@@ -52,6 +53,7 @@ class App extends Component {
 
   componentDidMount() {
     // console.log(this.props.spotteds);
+    elasticScroll();
     if (checkBridge()) {
       let self = this;
       window.webViewBridge.send(
@@ -61,10 +63,10 @@ class App extends Component {
           const result = JSON.stringify(res);
           if (result.includes("iPhone")) {
             const iOSVersion = result.substring(7, result.length - 3);
-            if (parseInt(iOSVersion.replace(',','.')) > 10.0){
-              self.setState({isNewIOS: true})
+            if (parseInt(iOSVersion.replace(",", ".")) > 10.0) {
+              self.setState({ isNewIOS: true });
             }
-            this.setState({os:"ios"})
+            this.setState({ os: "ios" });
           }
         },
         function(err) {
@@ -90,7 +92,11 @@ class App extends Component {
     const { changeLocation, previousPage } = this.props.actions;
     const { page, pageSize, os, isNewIOS } = this.state;
     return (
-      <div style={{paddingTop: isNewIOS ? "30px" : "0"}} className="app">
+      <div
+      
+        style={{ paddingTop: isNewIOS ? "30px" : "0" }}
+        className="app"
+      >
         <Navbar
           backButtonCallback={() => {
             previousPage();
@@ -117,7 +123,7 @@ class App extends Component {
         >
           {/* {this.props.isLoading ? "Loading" : "Loaded"} */}
         </div>
-        <div className="content">
+        <div  style={{ maxHeight: isNewIOS ? "calc(100vh - 160px)" : "calc(100vh - 100px)" }}  data-elastic className="content">
           {currentLocation.id == "home" ? (
             this.renderSpotteds()
           ) : currentLocation.id == "spotted" ? (
