@@ -66,7 +66,7 @@ class App extends Component {
             if (parseInt(iOSVersion.replace(",", ".")) > 10.0) {
               self.setState({ isNewIOS: true });
             }
-            this.setState({ os: "ios" });
+            self.setState({ os: "ios" });
           }
         },
         function(err) {
@@ -94,7 +94,7 @@ class App extends Component {
     return (
       <div
       
-        style={{ paddingTop: isNewIOS ? "30px" : "0" }}
+        style={{ paddingTop: isNewIOS ? "45px" : "0" }}
         className="app"
       >
         <Navbar
@@ -123,7 +123,7 @@ class App extends Component {
         >
           {/* {this.props.isLoading ? "Loading" : "Loaded"} */}
         </div>
-        <div  style={{ maxHeight: isNewIOS ? "calc(100vh - 160px)" : "calc(100vh - 100px)" }}  data-elastic className="content">
+        <div  style={{ maxHeight: isNewIOS ? "calc(100vh - 171px)" : "calc(100vh - 100px)" }}  data-elastic className="content">
           {currentLocation.id == "home" ? (
             this.renderSpotteds()
           ) : currentLocation.id == "spotted" ? (
