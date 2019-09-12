@@ -22,6 +22,8 @@ import {
   getSystemInfo,
   getDeviceId
 } from "../../util/react-native-bridge.js";
+import { NativeNavbar } from "../native-navbar/native-navbar.jsx";
+import { RedView, BlueView } from "./components.js";
 
 // App component - represents the whole app
 
@@ -31,11 +33,51 @@ class App extends Component {
     this.state = {
       page: 0,
       pageSize: 10,
-      isNewIOS: false,
-      os: "ios"
+      isNewIOS: true,
+      os: "ios",
+      pages: [],
+      modalPage: null
     };
+    this.push = this.push.bind(this);
+    this.previousPage = this.previousPage.bind(this);
+    this.openModal = this.openModal.bind(this);
+    this.closeModal = this.closeModal.bind(this);
   }
+
+  push(component, title, hasActionButton) {
+    const pages = this.state.pages;
+    const pageToAdd = { component: component, title: title, hasActionButton };
+    pages.push(pageToAdd);
+    this.setState({
+      pages
+    });
+  }
+  openModal(modal) {
+    this.setState({
+      modal
+    });
+  }
+  closeModal() {
+    this.setState({
+      modal: null
+    });
+  }
+
+  previousPage() {
+    console.log("previous page");
+
+    let pages = this.state.pages;
+    if (pages.length) {
+      setTimeout(() => {
+        const popped = pages.pop();
+
+        this.setState({ pages });
+      }, 50);
+    }
+  }
+
   renderSpotteds() {
+    return <div>a</div>;
     // return this.props.tasks.map(task => <Task key={task._id} task={task} />);
     return this.props.spotteds.map((spotted, id) => (
       <Spotted
@@ -54,6 +96,17 @@ class App extends Component {
   componentDidMount() {
     // console.log(this.props.spotteds);
     elasticScroll();
+    this.push(
+     RedView,
+      "Red",
+      true
+    );
+    this.push(
+     BlueView,
+      "Blue",
+      false
+    );
+
     if (checkBridge()) {
       let self = this;
       window.webViewBridge.send(
@@ -91,12 +144,24 @@ class App extends Component {
     const { currentLocation, history } = this.props;
     const { changeLocation, previousPage } = this.props.actions;
     const { page, pageSize, os, isNewIOS } = this.state;
+
     return (
-      <div
-      
-        style={{ paddingTop: isNewIOS ? "45px" : "0" }}
-        className="app"
-      >
+      <div style={{ paddingTop: isNewIOS ? "45px" : "0" }} className="app">
+        {this.state.pages.length > 0 && (
+          <NativeNavbar
+            previousPage={this.previousPage}
+            push={this.push}
+            pages={this.state.pages}
+            openModal={this.openModal}
+            closeModal={this.closeModal}
+            modalPage={this.state.modal}
+            ref={"nativeSwipeableRoutes"}
+          ></NativeNavbar>
+        )}
+      </div>
+    );
+    return (
+      <div style={{ paddingTop: isNewIOS ? "45px" : "0" }} className="app">
         <Navbar
           backButtonCallback={() => {
             previousPage();
@@ -123,7 +188,13 @@ class App extends Component {
         >
           {/* {this.props.isLoading ? "Loading" : "Loaded"} */}
         </div>
-        <div  style={{ maxHeight: isNewIOS ? "calc(100vh - 171px)" : "calc(100vh - 100px)" }}  data-elastic className="content">
+        <div
+          style={{
+            maxHeight: isNewIOS ? "calc(100vh - 171px)" : "calc(100vh - 100px)"
+          }}
+          data-elastic
+          className="content"
+        >
           {currentLocation.id == "home" ? (
             this.renderSpotteds()
           ) : currentLocation.id == "spotted" ? (

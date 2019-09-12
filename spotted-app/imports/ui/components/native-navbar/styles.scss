@@ -1,6 +1,18 @@
 $primary-color: #fc3158;
 $dark-grey: #b4b6b6;
-.navbar2-ios {
+
+html {
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+}
+
+.navbar-ios {
   display: inline-flex;
   width: 100%;
   height: 44px;
@@ -16,27 +28,29 @@ $dark-grey: #b4b6b6;
   }
   &-create-post {
     position: absolute;
-    box-sizing: boder;
-    left: auto;
+    box-sizing: border;
+
     right: 12px;
+    transition: opacity 260ms ease;
+    path {
+      fill: $primary-color;
+    }
     svg {
       height: 24px;
     }
+
     z-index: 2;
   }
 
   &-title {
     font-size: 17px;
-    position: absolute;
-    width: 100%;
-    text-align: center;
     z-index: 1;
   }
   &-button {
     align-items: center;
     z-index: 2;
     display: flex;
-    cursor: pointer;
+
     color: $primary-color;
     &-icon {
       height: 32px;
@@ -52,6 +66,41 @@ $dark-grey: #b4b6b6;
           stroke: $primary-color;
         }
       }
+    }
+  }
+}
+
+.page-modal {
+  position: fixed;
+  top: 0px;
+  padding-top: 45px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  max-width: 100vw;
+  overflow: hidden;
+  z-index: 100;
+  transition: transform 260ms ease;
+  transform: translateY(calc(100vh));
+  background-color: #f7f7f7;
+  &-content{
+    background-color: white;
+  }
+  &-close {
+    width: 18px;
+    height: 18px;
+    path {
+      fill: $primary-color;
+    }
+    position: absolute;
+    left: 16px;
+    z-index: 200;
+  }
+  &-title {
+    justify-content: space-around;
+    div {
+      font-weight: 600;
+      opacity: 1;
     }
   }
 }
