@@ -29,24 +29,23 @@ const getRandomColor = () => {
   return colors[randIndex];
 };
 
-const postSpotted = (text, color, source, actions) => {
-  Spotteds.insert({
-    color,
-    text,
-    source,
-    comments: [],
-    likes: [],
-    isLiked: false,
-    createdAt: new Date() // current time
-  });
-  alert("Success!");
-  actions.previousPage();
-};
-
 const NewSpotted = props => {
   const [text, setText] = React.useState("");
   const [colorClass, setColorClass] = React.useState(getRandomColor());
 
+  const postSpotted = (text, color, source, actions) => {
+    Spotteds.insert({
+      color,
+      text,
+      source,
+      comments: [],
+      likes: [],
+      isLiked: false,
+      createdAt: new Date() // current time
+    });
+    // alert("Success!");
+    props.previousPage();
+  };
   const openSpottedDetails = () => {
     const spottedPage = PAGE_SPOTTED;
     spottedPage.backButton = {

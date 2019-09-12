@@ -28,7 +28,6 @@ const Spotted = props => {
       ...spottedPage
     });
   };
-  console.log(props);
 
   return (
     <div

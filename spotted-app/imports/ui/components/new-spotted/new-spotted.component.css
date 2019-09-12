@@ -134,10 +134,13 @@
 }
 
 .post-spotted {
-  position: fixed;
-  left: 16px;
-  right: 16px;
+  position: absolute;
+  opacity: 1;
   bottom: 16px;
+  width: 100%;
+  padding: 16px;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
 }
 
 .post-spotted button {

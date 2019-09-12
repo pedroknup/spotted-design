@@ -76,36 +76,66 @@ class App extends Component {
     }
   }
 
-  renderSpotteds() {
-    return <div>a</div>;
+  renderSpotteds(spotteds) {
+    const isNewIOS = true;
+
     // return this.props.tasks.map(task => <Task key={task._id} task={task} />);
-    return this.props.spotteds.map((spotted, id) => (
-      <Spotted
-        key={id}
-        text={spotted.text}
-        source={spotted.source}
-        color={spotted.color}
-        id={spotted.id}
-        comments={spotted.comments}
-        likes={spotted.likes}
-        isLiked={spotted.isLiked}
-      />
-    ));
+    return (
+      <div
+        style={{
+          maxHeight: isNewIOS ? "calc(100vh - 171px)" : "calc(100vh - 100px)"
+        }}
+        data-elastic
+        className="content"
+      >
+        <h1>VISH</h1>
+        {spotteds.map((spotted, id) => (
+          <Spotted
+            key={id}
+            text={spotted.text}
+            source={spotted.source}
+            color={spotted.color}
+            id={spotted.id}
+            comments={spotted.comments}
+            likes={spotted.likes}
+            isLiked={spotted.isLiked}
+          />
+        ))}
+      </div>
+    );
   }
 
   componentDidMount() {
     // console.log(this.props.spotteds);
     elasticScroll();
-    this.push(
-     RedView,
-      "Red",
-      true
-    );
-    this.push(
-     BlueView,
-      "Blue",
-      false
-    );
+  }
+  renderSpotted() {
+    return <SpottedDetails />;
+  }
+  renderNewSpotted() {
+    return <NewSpotted />;
+  }
+  handleSubmit(event) {
+    event.preventDefault();
+  }
+
+  generateFirstPage(pages) {
+    console.log("props", this.props);
+    // alert(this.props.spotteds.length);
+    const spotteds = this.renderSpotteds(this.props.spotteds);
+
+    // this.push(spotteds, "Spotteds", true);
+    const SpottedFeed = props => {
+      const [text, setText] = React.useState("");
+
+      return <div>{spotteds}</div>;
+    };
+    this.setState({
+      pages: []
+    });
+    this.push(SpottedFeed, "Spotteds", false);
+
+    this.push(NewSpotted, "New Spotted", false);
 
     if (checkBridge()) {
       let self = this;
@@ -131,33 +161,27 @@ class App extends Component {
       // }
     }
   }
-  renderSpotted() {
-    return <SpottedDetails />;
-  }
-  renderNewSpotted() {
-    return <NewSpotted />;
-  }
-  handleSubmit(event) {
-    event.preventDefault();
-  }
+
   render() {
     const { currentLocation, history } = this.props;
-    const { changeLocation, previousPage } = this.props.actions;
     const { page, pageSize, os, isNewIOS } = this.state;
 
     return (
       <div style={{ paddingTop: isNewIOS ? "45px" : "0" }} className="app">
-        {this.state.pages.length > 0 && (
+        {!this.props.isLoading && (
           <NativeNavbar
             previousPage={this.previousPage}
             push={this.push}
             pages={this.state.pages}
+            spotteds={this.props.spotteds}
+            secondPage={this.state.secondPage}
             openModal={this.openModal}
             closeModal={this.closeModal}
             modalPage={this.state.modal}
             ref={"nativeSwipeableRoutes"}
           ></NativeNavbar>
         )}
+        
       </div>
     );
     return (
@@ -211,33 +235,21 @@ class App extends Component {
   }
 }
 
-function mapStateToProps(state) {
-  const newState = ({ currentLocation, history } = state);
-  return { ...newState };
-}
+export default withTracker(props => {
+  const handle = Meteor.subscribe("spotteds");
 
-function mapDispatchToProps(dispatch) {
-  return { actions: bindActionCreators(locationActions, dispatch) };
-}
+  return {
+    isLoading: !handle.ready(),
+    spotteds: Spotteds.find({},{ sort: { createdAt: -1 } }).fetch()
+  };
+})(App);
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(
-  // withTracker(() => {
-  //   return {
-  //     spotteds: Spotteds.find({}).fetch(),
-  //   };
-  // })(App)
-  withTracker(() => {
-    const subscriptionHandle = Meteor.subscribe("spotteds", {
-      pageSize: 10,
-      page: 0
-    });
+// export default withTracker(() => {
+//   const subscriptionHandle = Meteor.subscribe("spotteds");
 
-    return {
-      isLoading: !subscriptionHandle.ready(),
-      spotteds: Spotteds.find({}, { sort: { createdAt: -1 } }).fetch()
-    };
-  })(App)
-);
+//   return {
+//     isLoading: !subscriptionHandle.ready(),
+//     spotteds: Spotteds.find().fetch()
+//     // spotteds: Spotteds.find({}, { sort: { createdAt: -1 } }).fetch()
+//   };
+// })(App);

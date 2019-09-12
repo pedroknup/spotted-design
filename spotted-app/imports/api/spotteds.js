@@ -4,8 +4,9 @@ const Spotteds = new Mongo.Collection("spotteds");
 
 if (Meteor.isServer) {
   // This code only runs on the server
-  Meteor.publish("spotteds", function spottedsPublication() {
-    return Spotteds.find();
+  console.log("server", Spotteds.find({}).count())
+  Meteor.publish("spotteds", () => {
+    return Spotteds.find({});
   });
 }
 

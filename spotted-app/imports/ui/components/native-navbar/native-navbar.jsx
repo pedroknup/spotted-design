@@ -3,7 +3,9 @@ import { BrowserRouter as Router } from "react-router-dom";
 import "./index.css";
 import "./styles.css";
 import SwipeableViews from "react-swipeable-views";
-
+import Spotted from "../spotted/spotted.component.jsx";
+import elasticScroll from "elastic-scroll-polyfill";
+import NewSpotted from "../new-spotted/new-spotted.component.jsx";
 function getTextWidth(text, font) {
   // re-use canvas object for better performance
   var canvas =
@@ -14,15 +16,13 @@ function getTextWidth(text, font) {
   var metrics = context.measureText(text);
   return metrics.width;
 }
-const ANIMATION_DURATION = 1060;
+const ANIMATION_DURATION = 260;
 export class NativeNavbar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      pages: [],
-      firstPage: <div></div>,
-      secondPage: null,
-      currentIndex: 0
+      currentIndex: 0,
+      secondPage: false
     };
     this.push = this.push.bind(this);
     this.mapPages = this.mapPages.bind(this);
@@ -32,24 +32,26 @@ export class NativeNavbar extends Component {
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
     this.initialize = this.initialize.bind(this);
-    this.getCurrentPage = this.getCurrentPage.bind(this);
   }
 
   alert() {
     alert("hello world");
   }
   previousPage() {
-    this.props.previousPage();
+    this.setState({
+      secondPage: false
+    });
     this.swipeLeft();
   }
   componentDidMount() {
     this.initialize();
+    elasticScroll();
   }
 
   onFirstPage() {
     const firstPageTitle = document.querySelector(".title-red");
     const firstPageTitleBlack = document.querySelector(".title-red-black");
-    firstPageTitleBlack.innerHTML = this.props.pages[0].title;
+
     const backButton = document.querySelector(".navbar-ios-button");
 
     const elWidthFirstPageTitle = firstPageTitle.getBoundingClientRect().width;
@@ -63,14 +65,12 @@ export class NativeNavbar extends Component {
     const secondPageTitle = document.querySelector(".title-blue");
     secondPageTitle.style = `transition: all ${ANIMATION_DURATION}ms ease; transform: translateX(${window.outerWidth +
       100}px);opacity: 0`;
-    backButton.style = `transition: all ${ANIMATION_DURATION}ms ease; opacity: 0`;
-
-    setTimeout(() => {
-      secondPageTitle.style = `transition: none; transform: translateX(${window.outerWidth + 200}px);`;
-      //   actionButton.style = `transition: none; transform: translateX( ${window.outerWidth +
-      //     100}px); opacity: 0.6`;
-    
-    }, 260);
+    // setTimeout(() => {
+    //   secondPageTitle.style = `transition: none; transform: translateX(${window.outerWidth +
+    //     200}px);`;
+    //   //   actionButton.style = `transition: none; transform: translateX( ${window.outerWidth +
+    //   //     100}px); opacity: 0.6`;
+    // }, 260); //hmm
   }
   onSecondPage() {
     const firstPageTitle = document.querySelector(".title-red");
@@ -81,94 +81,25 @@ export class NativeNavbar extends Component {
 
     let elWidthSecondPageTitle = secondPageTitle.getBoundingClientRect().width;
 
-    firstPageTitleBlack.innerHTML = this.props.pages[0].title;
-    firstPageTitle.innerHTML = this.props.pages[0].title;
-    secondPageTitle.innerHTML = this.props.pages[1].title;
-
-    elWidthSecondPageTitle = getTextWidth(
-      this.props.pages[this.props.pages.length - 1].title,
-      "bold 12pt arial"
-    );
+    elWidthSecondPageTitle = getTextWidth("New Spotted", "bold 12pt arial");
     let initialPositionSecondPage =
       window.outerWidth / 2 - 26 - elWidthSecondPageTitle / 2;
     firstPageTitle.style = `transition: all ${ANIMATION_DURATION}ms ease; transform: translateX(0px); opacity: 1; `;
     firstPageTitleBlack.style = `transition: all ${ANIMATION_DURATION}ms ease; transform: translateX(0px); opacity: 0; `;
 
     secondPageTitle.style = `transition: all  ${ANIMATION_DURATION} ease; transform: translateX(${initialPositionSecondPage}px);opacity: 1`;
-
-    backButton.style = `transition: all ${ANIMATION_DURATION}ms ease; opacity: 1`;
   }
 
   initialize() {
-    if (this.props.pages.length == 1) {
+    if (this.state.secondPage != true) {
       this.onFirstPage();
-    } else if (this.props.pages.length == 2) {
+    } else {
       this.onSecondPage();
     }
     return;
-    const backButton = document.querySelector(".navbar-ios-button");
-    const firstPageTitle = document.querySelector(".title-red");
-    const firstPageTitleBlack = document.querySelector(".title-red-black");
-    const secondPageTitle = document.querySelector(".title-blue");
-    const elWidthFirstPageTitle = firstPageTitle.getBoundingClientRect().width;
-    const middleX = window.outerWidth / 2 - elWidthFirstPageTitle - 2;
-    const center = 1 * middleX - 26 * 1;
-    let elWidthSecondPageTitle = secondPageTitle.getBoundingClientRect().width;
-
-    if (this.props.pages.length >= 2) {
-      elWidthSecondPageTitle = getTextWidth(
-        this.props.pages[this.props.pages.length - 1].title,
-        "bold 12pt arial"
-      );
-    }
-
-    // elWidthSecondPageTitle = getTextWidth(this.props.pages[this.props.pages.length-1].title, 'bold 12pt arial');
-
-    let initialPositionSecondPage =
-      window.outerWidth / 2 - 26 - elWidthSecondPageTitle / 2;
-    let initialPositionFirstPage =
-      window.outerWidth / 2 - 26 - elWidthFirstPageTitle / 2;
-    const actionButton = document.querySelector(".navbar-ios-create-post");
-
-    if (this.props.pages.length == 1) {
-      firstPageTitleBlack.innerHTML = this.props.pages[0].title;
-
-      actionButton.style = "opacity: 0";
-      secondPageTitle.style = `transition: all ${ANIMATION_DURATION}ms ease; transform: translateX(${window.outerWidth +
-        100});opacity: 0`;
-      backButton.style = `transition: all ${ANIMATION_DURATION}ms ease; opacity: 0`;
-      firstPageTitle.style = `transition: all ${ANIMATION_DURATION}ms ease; transform: translateX(${initialPositionFirstPage}px); opacity: 0; `;
-      firstPageTitleBlack.style = `transition: all ${ANIMATION_DURATION}ms ease; transform: translateX(${initialPositionFirstPage}px); opacity: 1; `;
-      // firstPageTitle.style = `display: none`;
-    } else {
-      if (this.props.pages.length != 0) {
-        firstPageTitleBlack.innerHTML = this.props.pages[0].title;
-        firstPageTitle.innerHTML = this.props.pages[0].title;
-        secondPageTitle.innerHTML = this.props.pages[1].title;
-      }
-      actionButton.style = "opacity: 0";
-      backButton.style = `transition: all ${ANIMATION_DURATION}ms ease; opacity: 1`;
-      secondPageTitle.style = `transition: all  ${ANIMATION_DURATION} ease; transform: translateX(${initialPositionSecondPage}px);opacity: 1`;
-      // alert(initialPositionSecondPage);
-      // secondPageTitle.style = `;opacity: ${event * 0.25}`;
-      firstPageTitleBlack.style = `transition: all ${ANIMATION_DURATION}ms ease; left:26px; opacity: 0`;
-      firstPageTitle.style = `transition: all ${ANIMATION_DURATION}ms ease; left:26px;`;
-      document.querySelector(
-        ".middle"
-      ).style = `transform: translateX(${window.outerWidth / 2}px)`;
-
-      //   document
-      //     .querySelector(".page-red")
-      //     .addEventListener("click", function(event) {
-
-      //     });
-
-      let self = this;
-    }
   }
 
   push(component, title) {
-    this.props.push(component, title);
     this.swipeRight();
   }
 
@@ -176,18 +107,13 @@ export class NativeNavbar extends Component {
     this.initialize();
   }
   mapPages(currentPages) {
-    console.log(this.props.pages);
+    // console.log(this.props.pages);
 
     this.initialize();
   }
 
-  getCurrentPage() {
-    return (
-      this.props.pages.length && this.props.pages[this.props.pages.length - 1]
-    );
-  }
   onSwipeHandler = (progress, type) => {
-    if (this.props.pages.length > 1) {
+    if (this.state.secondPage) {
       const backButton = document.querySelector(".navbar-ios-button");
       const actionButton = document.querySelector(".navbar-ios-create-post");
       const firstPageTitle = document.querySelector(".title-red");
@@ -219,7 +145,6 @@ export class NativeNavbar extends Component {
 
         actionButton.style = `transition: none;opacity: ${1 - progress}`;
       } else {
-
         if (progress == 0) {
           this.swipeLeft();
           actionButton.style = "opacity: 1";
@@ -232,6 +157,7 @@ export class NativeNavbar extends Component {
   };
 
   swipeLeft(changing) {
+    this.setState({ secondPage: false });
     const backButton = document.querySelector(".navbar-ios-button");
     const firstPageTitle = document.querySelector(".title-red");
     const firstPageTitleBlack = document.querySelector(".title-red-black");
@@ -248,24 +174,15 @@ export class NativeNavbar extends Component {
       window.outerWidth / 2 - 26 - elWidthFirstPageTitle / 2;
     initialPositionFirstPage -= 0;
 
-    secondPageTitle.style = `transition: all ${ANIMATION_DURATION}ms ease;opacity: 0; transform: translateX(1000px)`;
+    secondPageTitle.style = `transition: all ${ANIMATION_DURATION}ms ease;opacity: 0; transform: translateX(${window.outerWidth}px)`;
     firstPageTitle.style = `transition: all ${ANIMATION_DURATION}ms ease; transform: translateX(${initialPositionFirstPage}px);opacity: 0;`;
 
     firstPageTitleBlack.style = `transition: all ${ANIMATION_DURATION}ms ease;transform: translateX(${initialPositionFirstPage}px); opacity: 1`;
-    backButton.style = `transition: all ${ANIMATION_DURATION}ms ease; opacity: 0;`;
-   
-    setTimeout(() => {
-      secondPageTitle.style = `transition: none; transform: translateX(1000px);`;
-      //   actionButton.style = `transition: none; transform: translateX( ${window.outerWidth +
-      //     100}px); opacity: 0.6`;
-      try {
-        firstPageTitleBlack.innerHTML = self.props.pages[0].title;
-      } catch (e) {}
-
-      try {
-        firstPageTitleRed.innerHTML = self.props.pages[0].title;
-      } catch (e) {}
-    }, 1060);
+    // setTimeout(() => {
+    //   secondPageTitle.style = `transition: none; transform: translateX(${window.outerWidth}px);`;
+    //   //   actionButton.style = `transition: none; transform: translateX( ${window.outerWidth +
+    //   //     100}px); opacity: 0.6`;
+    // }, 1060); //hmm
   }
   threshold = false;
   swipeRight() {
@@ -281,15 +198,12 @@ export class NativeNavbar extends Component {
 
       const elWidth = firstPageTitle.getBoundingClientRect().width / 2;
       const middleX = window.outerWidth / 2 - 26 - elWidth;
-
+      backButton.style = `opacity: 1`;
       let elWidthSecondPageTitle = secondPageTitle.getBoundingClientRect()
         .width;
 
-      if (this.props.pages.length >= 2) {
-        elWidthSecondPageTitle = getTextWidth(
-          this.props.pages[this.props.pages.length - 1].title,
-          "bold 12pt arial"
-        );
+      if (this.state.secondPage) {
+        elWidthSecondPageTitle = getTextWidth("New Spotted", "bold 12pt arial");
       }
 
       let initialPositionSecondPage =
@@ -297,22 +211,10 @@ export class NativeNavbar extends Component {
       secondPageTitle.style = `transition: all ${ANIMATION_DURATION}ms ease; opacity:1;transform: translateX(${initialPositionSecondPage}px);`;
       firstPageTitle.style = `transition: all ${ANIMATION_DURATION}ms ease;transform: translateX(${0}px);`;
       firstPageTitleBlack.style = `transition: all ${ANIMATION_DURATION}ms ease;transform: translateX(${0}px);`;
-      backButton.style = `transition: opacity ${ANIMATION_DURATION}ms ease;opacity: 1;`;
 
       //   const actionButton = document.querySelector(".navbar-ios-create-post");
       //   actionButton.style = `transition: all ${ANIMATION_DURATION}ms ease;transform: translateX(0px);opacity:1`;
       const self = this;
-      setTimeout(() => {
-        if (self.props.pages.length >= 2) {
-          secondPageTitle.innerHTML =
-            self.props.pages[self.props.pages.length - 1].title;
-          firstPageTitle.innerHTML =
-            self.props.pages[self.props.pages.length - 2].title;
-        } else if (self.props.pages.length == 1) {
-          secondPageTitle.innerHTML =
-            self.props.pages[self.props.pages.length - 1].title;
-        }
-      }, ANIMATION_DURATION);
     }
   }
 
@@ -344,16 +246,9 @@ export class NativeNavbar extends Component {
 
       ...rest
     } = this.props;
-    const { firstPage, secondPage } = this.state;
-    const pages = this.props.pages.slice(
-      this.props.pages.length - 2,
-      this.props.pages.length
-    );
     const self = this;
-    console.log("pages", pages);
 
-    const hasActionButton =
-      this.getCurrentPage() && this.getCurrentPage().hasActionButton;
+    const isNewIOS = true;
     return (
       <Router>
         <div className="App">
@@ -400,6 +295,7 @@ export class NativeNavbar extends Component {
                 self.previousPage();
               }}
               className={`navbar-ios-button`}
+              style={{ opacity: this.state.secondPage ? 1 : 0 }}
             >
               <svg
                 className={`navbar-ios-button-icon back`}
@@ -409,14 +305,14 @@ export class NativeNavbar extends Component {
                 <path d="M217.9 256L345 129c9.4-9.4 9.4-24.6 0-33.9-9.4-9.4-24.6-9.3-34 0L167 239c-9.1 9.1-9.3 23.7-.7 33.1L310.9 417c4.7 4.7 10.9 7 17 7s12.3-2.3 17-7c9.4-9.4 9.4-24.6 0-33.9L217.9 256z" />
               </svg>
             </div>
-            <div />
+
             <div
               onClick={() => {
                 self.previousPage();
               }}
               className={`title-red navbar-ios-title`}
             >
-              {/* {pages.length == 1 ? pages[0].title : pages.length == 2 && this.props.pages[0].title} */}
+              Spotteds
             </div>
             <div
               onClick={() => {
@@ -424,20 +320,21 @@ export class NativeNavbar extends Component {
               }}
               className={`title-red-black navbar-ios-title`}
             >
-              {/* {pages.length == 1 ? pages[0].title : pages.length == 2 && this.props.pages[0].title} */}
+              Spotteds
             </div>
 
             <div
               onClick={() => {
-                this.openModal({
-                  component: (
-                    <div style={{ textAlign: "center" }}>Test Modal body</div>
-                  ),
-                  title: "Test Modal"
-                });
+                self.setState(
+                  {
+                    secondPage: true
+                  },
+
+                  this.initialize
+                );
               }}
               style={{
-                opacity: hasActionButton ? 1 : 0
+                opacity: !this.state.secondPage ? 1 : 0
                 // transform: `translateX(${
                 //   hasActionButton ? 0 : window.outerWidth * -1
                 // }px)`
@@ -459,28 +356,79 @@ export class NativeNavbar extends Component {
               </svg>
             </div>
 
-            <div className={`title-blue navbar-ios-title`}></div>
+            <div className={`title-blue navbar-ios-title`}>New Spotted</div>
             <div className={`middle`}></div>
           </div>
 
-          <SwipeableViews
-            onChangeIndex={this.onChangeIndex}
-            index={this.props.pages.length ? this.props.pages.length - 1 : 0}
-            // index={0}
-            onSwitching={this.onSwipeHandler}
-            enableMouseEvents={true}
-            axis="x"
-            ref="swpv"
-          >
-            {pages.map((element, index) => {
-              return React.createElement(element.component, {
-                key: index,
-                alert: this.alert,
-                push: this.push,
-                previousPage: this.previousPage
-              });
-            })}
-          </SwipeableViews>
+          {this.state.secondPage === true ? (
+            <SwipeableViews
+              onChangeIndex={this.onChangeIndex}
+              index={1}
+              // index={0}
+              onSwitching={this.onSwipeHandler}
+              enableMouseEvents={true}
+              axis="x"
+              ref="swpv"
+            >
+              <div
+                style={{
+                
+                  maxHeight: isNewIOS
+                    ? "calc(100vh - 171px)"
+                    : "calc(100vh - 100px)"
+                }}
+                data-elastic
+                className="content"
+              >
+                {this.props.spotteds.map((spotted, id) => (
+                  <Spotted
+                    key={id}
+                    text={spotted.text}
+                    source={spotted.source}
+                    color={spotted.color}
+                    id={spotted.id}
+                    comments={spotted.comments}
+                    likes={spotted.likes}
+                    isLiked={spotted.isLiked}
+                  />
+                ))}
+              </div>
+              <NewSpotted previousPage={this.previousPage} />
+            </SwipeableViews>
+          ) : (
+            <SwipeableViews
+              onChangeIndex={this.onChangeIndex}
+              index={0}
+              // index={0}
+              onSwitching={this.onSwipeHandler}
+              enableMouseEvents={true}
+              axis="x"
+              ref="swpv"
+            >
+              <div
+                style={{
+                  maxHeight: isNewIOS
+                    ? "calc(100vh - 171px)"
+                    : "calc(100vh - 100px)"
+                }}
+                data-elastic
+                className="content"
+              >
+                {this.props.spotteds.map((spotted, id) => (
+                  <Spotted
+                    key={id}
+                    text={spotted.text}
+                    source={spotted.source}
+                    color={spotted.color}
+                    id={spotted.id}
+                    comments={spotted.comments}
+                    likes={spotted.likes}
+                    isLiked={spotted.isLiked}
+                  />
+                ))}
+              </div>
+            </SwipeableViews>
+          )}
         </div>
       </Router>
     );
