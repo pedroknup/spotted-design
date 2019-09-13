@@ -1,29 +1,27 @@
-import React, { Component } from "react";
-import { withTracker } from "meteor/react-meteor-data";
-import ReactDOM from "react-dom";
-import Spotted from "../spotted/spotted.component.jsx";
-import NewSpotted from "../new-spotted/new-spotted.component.jsx";
-import SpottedDetails from "../spotted-details/spotted-details.component.jsx";
+import React, { Component } from 'react';
+import { withTracker } from 'meteor/react-meteor-data';
+import ReactDOM from 'react-dom';
+import Spotted from '../spotted/spotted.component.jsx';
+import NewSpotted from '../new-spotted/new-spotted.component.jsx';
+import SpottedDetails from '../spotted-details/spotted-details.component.jsx';
 
-import "./app.css";
+import './app.css';
+import { I18nextProvider } from 'react-i18next';
 
-import FooterIos from "../footer-ios/footer-ios.component.jsx";
-import Navbar from "../navbar/navbar.component.jsx";
-import { bindActionCreators } from "redux";
+import FooterIos from '../footer-ios/footer-ios.component.jsx';
+import Navbar from '../navbar/navbar.component.jsx';
+import { bindActionCreators } from 'redux';
 
-import * as locationActions from "../../redux/actions/index";
-import { connect } from "react-redux";
-import { NEW_SPOTTED, PAGE_SPOTTED } from "../../redux/constants/pages.js";
-import Spotteds from "../../../api/spotteds.js";
-import elasticScroll from "elastic-scroll-polyfill";
-import TabAndroid from "../tab-android/tab-android.component.jsx";
-import {
-  checkBridge,
-  getSystemInfo,
-  getDeviceId
-} from "../../util/react-native-bridge.js";
-import { NativeNavbar } from "../native-navbar/native-navbar.jsx";
-import { RedView, BlueView } from "./components.js";
+import * as locationActions from '../../redux/actions/index';
+import { connect } from 'react-redux';
+import { NEW_SPOTTED, PAGE_SPOTTED } from '../../redux/constants/pages.js';
+import Spotteds from '../../../api/spotteds.js';
+import elasticScroll from 'elastic-scroll-polyfill';
+import TabAndroid from '../tab-android/tab-android.component.jsx';
+import { checkBridge, getSystemInfo, getDeviceId } from '../../util/react-native-bridge.js';
+import { NativeNavbar } from '../native-navbar/native-navbar.jsx';
+import { RedView, BlueView } from './components.js';
+import i18n from '../../locales/i18n/index.js';
 
 // App component - represents the whole app
 
@@ -34,7 +32,7 @@ class App extends Component {
       page: 0,
       pageSize: 10,
       isNewIOS: true,
-      os: "ios",
+      os: 'ios',
       pages: [],
       modalPage: null
     };
@@ -64,7 +62,7 @@ class App extends Component {
   }
 
   previousPage() {
-    console.log("previous page");
+    console.log('previous page');
 
     let pages = this.state.pages;
     if (pages.length) {
@@ -83,10 +81,10 @@ class App extends Component {
     return (
       <div
         style={{
-          maxHeight: isNewIOS ? "calc(100vh - 171px)" : "calc(100vh - 100px)"
+          maxHeight: isNewIOS ? 'calc(100vh - 171px)' : 'calc(100vh - 100px)'
         }}
         data-elastic
-        className="content"
+        className='content'
       >
         <h1>VISH</h1>
         {spotteds.map((spotted, id) => (
@@ -120,40 +118,40 @@ class App extends Component {
   }
 
   generateFirstPage(pages) {
-    console.log("props", this.props);
+    console.log('props', this.props);
     // alert(this.props.spotteds.length);
     const spotteds = this.renderSpotteds(this.props.spotteds);
 
     // this.push(spotteds, "Spotteds", true);
     const SpottedFeed = props => {
-      const [text, setText] = React.useState("");
+      const [text, setText] = React.useState('');
 
       return <div>{spotteds}</div>;
     };
     this.setState({
       pages: []
     });
-    this.push(SpottedFeed, "Spotteds", false);
+    this.push(SpottedFeed, 'Spotteds', false);
 
-    this.push(NewSpotted, "New Spotted", false);
+    this.push(NewSpotted, 'New Spotted', false);
 
     if (checkBridge()) {
       let self = this;
       window.webViewBridge.send(
-        "getDeviceId",
-        "",
+        'getDeviceId',
+        '',
         function(res) {
           const result = JSON.stringify(res);
-          if (result.includes("iPhone")) {
+          if (result.includes('iPhone')) {
             const iOSVersion = result.substring(7, result.length - 3);
-            if (parseInt(iOSVersion.replace(",", ".")) > 10.0) {
+            if (parseInt(iOSVersion.replace(',', '.')) > 10.0) {
               self.setState({ isNewIOS: true });
             }
-            self.setState({ os: "ios" });
+            self.setState({ os: 'ios' });
           }
         },
         function(err) {
-          alert("lol", err);
+          alert('lol', err);
         }
       );
       // if (deviceId.includes("iphone")) {
@@ -167,25 +165,27 @@ class App extends Component {
     const { page, pageSize, os, isNewIOS } = this.state;
 
     return (
-      <div style={{ paddingTop: isNewIOS ? "45px" : "0" }} className="app">
-        {!this.props.isLoading && (
-          <NativeNavbar
-            previousPage={this.previousPage}
-            push={this.push}
-            pages={this.state.pages}
-            spotteds={this.props.spotteds}
-            secondPage={this.state.secondPage}
-            openModal={this.openModal}
-            closeModal={this.closeModal}
-            modalPage={this.state.modal}
-            ref={"nativeSwipeableRoutes"}
-          ></NativeNavbar>
-        )}
-        
+      <div style={{ paddingTop: isNewIOS ? '45px' : '0' }} className='app'>
+        <I18nextProvider i18n={i18n}>
+          {/* <img src={photo} alt={t('props.alt')} /> */}
+          {!this.props.isLoading && (
+            <NativeNavbar
+              previousPage={this.previousPage}
+              push={this.push}
+              pages={this.state.pages}
+              spotteds={this.props.spotteds}
+              secondPage={this.state.secondPage}
+              openModal={this.openModal}
+              closeModal={this.closeModal}
+              modalPage={this.state.modal}
+              ref={'nativeSwipeableRoutes'}
+            ></NativeNavbar>
+          )}
+        </I18nextProvider>
       </div>
     );
     return (
-      <div style={{ paddingTop: isNewIOS ? "45px" : "0" }} className="app">
+      <div style={{ paddingTop: isNewIOS ? '45px' : '0' }} className='app'>
         <Navbar
           backButtonCallback={() => {
             previousPage();
@@ -198,49 +198,49 @@ class App extends Component {
             changeLocation(NEW_SPOTTED);
           }}
         />
-        {currentLocation.id == "home" && os === "android" && <TabAndroid />}
+        {currentLocation.id == 'home' && os === 'android' && <TabAndroid />}
         <div
           style={{
-            position: "fixed",
+            position: 'fixed',
             // top: 56,
             top: 100,
             left: 16,
-            backgroundColor: "red",
+            backgroundColor: 'red',
             zIndex: 1000,
-            color: "white"
+            color: 'white'
           }}
         >
           {/* {this.props.isLoading ? "Loading" : "Loaded"} */}
         </div>
         <div
           style={{
-            maxHeight: isNewIOS ? "calc(100vh - 171px)" : "calc(100vh - 100px)"
+            maxHeight: isNewIOS ? 'calc(100vh - 171px)' : 'calc(100vh - 100px)'
           }}
           data-elastic
-          className="content"
+          className='content'
         >
-          {currentLocation.id == "home" ? (
+          {currentLocation.id == 'home' ? (
             this.renderSpotteds()
-          ) : currentLocation.id == "spotted" ? (
+          ) : currentLocation.id == 'spotted' ? (
             this.renderSpotted()
-          ) : currentLocation.id == "newSpotted" ? (
+          ) : currentLocation.id == 'newSpotted' ? (
             this.renderNewSpotted()
           ) : (
             <div>404</div>
           )}
         </div>
-        {currentLocation.id == "home" && os === "ios" && <FooterIos />}
+        {currentLocation.id == 'home' && os === 'ios' && <FooterIos />}
       </div>
     );
   }
 }
 
 export default withTracker(props => {
-  const handle = Meteor.subscribe("spotteds");
+  const handle = Meteor.subscribe('spotteds');
 
   return {
     isLoading: !handle.ready(),
-    spotteds: Spotteds.find({},{ sort: { createdAt: -1 } }).fetch()
+    spotteds: Spotteds.find({}, { sort: { createdAt: -1 } }).fetch()
   };
 })(App);
 
