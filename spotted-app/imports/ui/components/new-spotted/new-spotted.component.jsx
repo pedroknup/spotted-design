@@ -66,7 +66,7 @@ const NewSpotted = props => {
   };
 
   return (
-    <div>
+    <div style={{height: 'calc(100vh - 100px)'}}>
       <div
         className={`new-spotted new-spotted-${colorClass} ${colorClass !=
           "white" && "white-fg"}`}
