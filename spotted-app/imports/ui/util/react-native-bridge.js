@@ -1,6 +1,6 @@
 var promiseChain = Promise.resolve();
 var callbacks = {};
-var init = function() {
+export var initBridge = function() {
   const guid = function() {
     function s4() {
       return Math.floor((1 + Math.random()) * 0x10000)
@@ -88,15 +88,15 @@ export function checkBridge() {
   return false;
 }
 
-export function getDeviceId() {
+export function getDeviceId(callback) {
     let toReturn = "";
 
   window.webViewBridge.send(
     "getDeviceId",
     "",
     function(res) {
-      toReturn = JSON.stringify(res);
-      return toReturn;
+      // return res;
+      callback(res)
 
     },
     function(err) {

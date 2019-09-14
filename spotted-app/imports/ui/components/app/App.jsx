@@ -20,7 +20,8 @@ import TabAndroid from "../tab-android/tab-android.component.jsx";
 import {
   checkBridge,
   getSystemInfo,
-  getDeviceId
+  getDeviceId,
+  initBridge
 } from "../../util/react-native-bridge.js";
 import { NativeNavbar } from "../native-navbar/native-navbar.jsx";
 import { RedView, BlueView } from "./components.js";
@@ -34,6 +35,7 @@ class App extends Component {
       page: 0,
       pageSize: 10,
       isNewIOS: true,
+      isLoading: false,
       os: "ios",
       pages: [],
       modalPage: null
@@ -42,6 +44,15 @@ class App extends Component {
     this.previousPage = this.previousPage.bind(this);
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
+
+    try {
+      initBridge();
+      getDeviceId((res)=>{alert(res)});
+      //  alert(deviceId);
+      // else alert("oops");
+    } catch (e) {
+      alert(e);
+    }
   }
 
   push(component, title, hasActionButton) {
@@ -181,7 +192,6 @@ class App extends Component {
             ref={"nativeSwipeableRoutes"}
           ></NativeNavbar>
         )}
-        
       </div>
     );
     return (
@@ -240,7 +250,7 @@ export default withTracker(props => {
 
   return {
     isLoading: !handle.ready(),
-    spotteds: Spotteds.find({},{ sort: { createdAt: -1 } }).fetch()
+    spotteds: Spotteds.find({}, { sort: { createdAt: -1 } }).fetch()
   };
 })(App);
 

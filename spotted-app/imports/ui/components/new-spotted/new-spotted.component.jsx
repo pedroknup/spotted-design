@@ -9,6 +9,7 @@ import { connect } from "react-redux";
 import { withTracker } from "meteor/react-meteor-data";
 import { PAGE_SPOTTED, PAGE_HOME } from "../../redux/constants/pages";
 import Spotteds from "../../../api/spotteds";
+import InputComponent from "../core/input/input.component.jsx";
 
 const getRandomColor = () => {
   const colors = [
@@ -74,12 +75,12 @@ const NewSpotted = props => {
         <div className="new-spotted-text">{text ? text : "Preview"}</div>
       </div>
       <div className="new-spotted-form">
-        <input
-          onChange={event => {
-            setText(event.target.value);
+        <InputComponent
+          onChange={value => {
+            setText(value);
           }}
           placeholder="Type your Spotted"
-        ></input>
+        ></InputComponent>
 
         <div className="color-selector">
           <div
