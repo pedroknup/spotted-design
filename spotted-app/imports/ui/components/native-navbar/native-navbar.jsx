@@ -6,6 +6,7 @@ import SwipeableViews from "react-swipeable-views";
 import Spotted from "../spotted/spotted.component.jsx";
 import elasticScroll from "elastic-scroll-polyfill";
 import NewSpotted from "../new-spotted/new-spotted.component.jsx";
+import SpottedDetails from "../spotted-details/spotted-details.component.jsx";
 function getTextWidth(text, font) {
   // re-use canvas object for better performance
   var canvas =
@@ -22,7 +23,8 @@ export class NativeNavbar extends Component {
     super(props);
     this.state = {
       currentIndex: 0,
-      secondPage: false
+      secondPageNewSpotted: false,
+      secondPageSpottedInfo: false
     };
     this.push = this.push.bind(this);
     this.mapPages = this.mapPages.bind(this);
@@ -32,6 +34,7 @@ export class NativeNavbar extends Component {
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
     this.initialize = this.initialize.bind(this);
+    this.openSpottedInfo = this.openSpottedInfo.bind(this);
   }
 
   alert() {
@@ -39,7 +42,9 @@ export class NativeNavbar extends Component {
   }
   previousPage() {
     this.setState({
-      secondPage: false
+      secondPageNewSpotted: false,
+      secondPageSpottedInfo: false,
+      selectedSpotted: null
     });
     this.swipeLeft();
   }
@@ -81,7 +86,10 @@ export class NativeNavbar extends Component {
 
     let elWidthSecondPageTitle = secondPageTitle.getBoundingClientRect().width;
 
-    elWidthSecondPageTitle = getTextWidth("New Spotted", "bold 12pt arial");
+    if (this.state.secondPageSpottedInfo)
+      elWidthSecondPageTitle = getTextWidth("Spotted", "bold 12pt arial");
+    else
+      elWidthSecondPageTitle = getTextWidth("New Spotted", "bold 12pt arial");
     let initialPositionSecondPage =
       window.outerWidth / 2 - 26 - elWidthSecondPageTitle / 2;
     firstPageTitle.style = `transition: all ${ANIMATION_DURATION}ms ease; transform: translateX(0px); opacity: 1; `;
@@ -91,7 +99,10 @@ export class NativeNavbar extends Component {
   }
 
   initialize() {
-    if (this.state.secondPage != true) {
+    if (
+      this.state.secondPageNewSpotted != true &&
+      this.state.secondPageSpottedInfo != true
+    ) {
       this.onFirstPage();
     } else {
       this.onSecondPage();
@@ -112,8 +123,15 @@ export class NativeNavbar extends Component {
     this.initialize();
   }
 
+  openSpottedInfo(selectedSpotted) {
+    this.setState(
+      { secondPageSpottedInfo: true, selectedSpotted },
+      this.initialize
+    );
+  }
+
   onSwipeHandler = (progress, type) => {
-    if (this.state.secondPage) {
+    if (this.state.secondPageNewSpotted || this.state.secondPageSpottedInfo) {
       const backButton = document.querySelector(".navbar-ios-button");
       const actionButton = document.querySelector(".navbar-ios-create-post");
       const firstPageTitle = document.querySelector(".title-red");
@@ -157,7 +175,10 @@ export class NativeNavbar extends Component {
   };
 
   swipeLeft(changing) {
-    this.setState({ secondPage: false });
+    this.setState({
+      secondPageNewSpotted: false,
+      secondPageSpottedInfo: false
+    });
     const backButton = document.querySelector(".navbar-ios-button");
     const firstPageTitle = document.querySelector(".title-red");
     const firstPageTitleBlack = document.querySelector(".title-red-black");
@@ -202,8 +223,10 @@ export class NativeNavbar extends Component {
       let elWidthSecondPageTitle = secondPageTitle.getBoundingClientRect()
         .width;
 
-      if (this.state.secondPage) {
+      if (this.state.secondPageNewSpotted) {
         elWidthSecondPageTitle = getTextWidth("New Spotted", "bold 12pt arial");
+      } else if (this.state.secondPageSpottedInfo) {
+        elWidthSecondPageTitle = getTextWidth("Spotted", "bold 12pt arial");
       }
 
       let initialPositionSecondPage =
@@ -295,7 +318,13 @@ export class NativeNavbar extends Component {
                 self.previousPage();
               }}
               className={`navbar-ios-button`}
-              style={{ opacity: this.state.secondPage ? 1 : 0 }}
+              style={{
+                opacity:
+                  this.state.secondPageNewSpotted ||
+                  this.state.secondPageSpottedInfo
+                    ? 1
+                    : 0
+              }}
             >
               <svg
                 className={`navbar-ios-button-icon back`}
@@ -312,7 +341,7 @@ export class NativeNavbar extends Component {
               }}
               className={`title-red navbar-ios-title`}
             >
-              Spotteds
+              Feed
             </div>
             <div
               onClick={() => {
@@ -320,21 +349,24 @@ export class NativeNavbar extends Component {
               }}
               className={`title-red-black navbar-ios-title`}
             >
-              Spotteds
+              Feed
             </div>
 
             <div
               onClick={() => {
                 self.setState(
                   {
-                    secondPage: true
+                    secondPageNewSpotted: true
                   },
-
                   this.initialize
                 );
               }}
               style={{
-                opacity: !this.state.secondPage ? 1 : 0
+                opacity:
+                  !this.state.secondPageNewSpotted &&
+                  !this.state.secondPageSpottedInfo
+                    ? 1
+                    : 0
                 // transform: `translateX(${
                 //   hasActionButton ? 0 : window.outerWidth * -1
                 // }px)`
@@ -356,11 +388,13 @@ export class NativeNavbar extends Component {
               </svg>
             </div>
 
-            <div className={`title-blue navbar-ios-title`}>New Spotted</div>
+            <div className={`title-blue navbar-ios-title`}>
+              {this.state.secondPageNewSpotted ? "New Spotted" : "Spotted"}
+            </div>
             <div className={`middle`}></div>
           </div>
 
-          {this.state.secondPage === true ? (
+          {this.state.secondPageNewSpotted === true ? (
             <SwipeableViews
               onChangeIndex={this.onChangeIndex}
               index={1}
@@ -372,7 +406,6 @@ export class NativeNavbar extends Component {
             >
               <div
                 style={{
-                
                   maxHeight: isNewIOS
                     ? "calc(100vh - 171px)"
                     : "calc(100vh - 100px)"
@@ -381,19 +414,67 @@ export class NativeNavbar extends Component {
                 className="content"
               >
                 {this.props.spotteds.map((spotted, id) => (
-                  <Spotted
+                  <div
                     key={id}
-                    text={spotted.text}
-                    source={spotted.source}
-                    color={spotted.color}
-                    id={spotted.id}
-                    comments={spotted.comments}
-                    likes={spotted.likes}
-                    isLiked={spotted.isLiked}
-                  />
+                    onClick={() => {
+                      this.openSpottedInfo(spotted);
+                      console.log("clicked");
+                    }}
+                  >
+                    <Spotted
+                      text={spotted.text}
+                      source={spotted.source}
+                      color={spotted.color}
+                      id={spotted.id}
+                      comments={spotted.comments}
+                      likes={spotted.likes}
+                      isLiked={spotted.isLiked}
+                    />
+                  </div>
                 ))}
               </div>
               <NewSpotted previousPage={this.previousPage} />
+            </SwipeableViews>
+          ) : this.state.secondPageSpottedInfo ? (
+            <SwipeableViews
+              onChangeIndex={this.onChangeIndex}
+              index={1}
+              // index={0}
+              onSwitching={this.onSwipeHandler}
+              enableMouseEvents={true}
+              axis="x"
+              ref="swpv"
+            >
+              <div
+                style={{
+                  maxHeight: isNewIOS
+                    ? "calc(100vh - 171px)"
+                    : "calc(100vh - 100px)"
+                }}
+                data-elastic
+                className="content"
+              >
+                {this.props.spotteds.map((spotted, id) => (
+                  <div
+                    key={id}
+                    onClick={() => {
+                      this.openSpottedInfo(spotted);
+                      console.log("clicked");
+                    }}
+                  >
+                    <Spotted
+                      text={spotted.text}
+                      source={spotted.source}
+                      color={spotted.color}
+                      id={spotted.id}
+                      comments={spotted.comments}
+                      likes={spotted.likes}
+                      isLiked={spotted.isLiked}
+                    />
+                  </div>
+                ))}
+              </div>
+              <SpottedDetails {...this.state.selectedSpotted} />
             </SwipeableViews>
           ) : (
             <SwipeableViews
@@ -415,16 +496,23 @@ export class NativeNavbar extends Component {
                 className="content"
               >
                 {this.props.spotteds.map((spotted, id) => (
-                  <Spotted
+                  <div
                     key={id}
-                    text={spotted.text}
-                    source={spotted.source}
-                    color={spotted.color}
-                    id={spotted.id}
-                    comments={spotted.comments}
-                    likes={spotted.likes}
-                    isLiked={spotted.isLiked}
-                  />
+                    onClick={() => {
+                      this.openSpottedInfo(spotted);
+                      console.log("clicked");
+                    }}
+                  >
+                    <Spotted
+                      text={spotted.text}
+                      source={spotted.source}
+                      color={spotted.color}
+                      id={spotted.id}
+                      comments={spotted.comments}
+                      likes={spotted.likes}
+                      isLiked={spotted.isLiked}
+                    />
+                  </div>
                 ))}
               </div>
             </SwipeableViews>

@@ -30,9 +30,11 @@ const SpottedDetails = props => {
       ...spottedPage
     });
   };
-
   return (
-    <div onClick={openSpottedDetails} className="spotted spotted-purple white-fg">
+    <div
+      className={`spotted spotted-${color} ${color != "white" &&
+        "white-fg"}`}
+    >
       <svg
         className="spotted-icon spotted-more"
         version="1.1"

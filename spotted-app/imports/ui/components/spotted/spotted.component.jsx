@@ -11,22 +11,22 @@ import { PAGE_SPOTTED, PAGE_HOME } from "../../redux/constants/pages";
 const Spotted = props => {
   const { color, text, id, source, comments, likes, isLiked } = props;
   const openSpotted = () => {
-    const spottedPage = PAGE_SPOTTED;
-    spottedPage.backButton = {
-      PAGE_HOME
-    };
-    spottedPage.payload = {
-      color,
-      text,
-      id,
-      source,
-      comments,
-      likes,
-      isLiked
-    };
-    props.actions.changeLocation({
-      ...spottedPage
-    });
+    // const spottedPage = PAGE_SPOTTED;
+    // spottedPage.backButton = {
+    //   PAGE_HOME
+    // };
+    // spottedPage.payload = {
+    //   color,
+    //   text,
+    //   id,
+    //   source,
+    //   comments,
+    //   likes,
+    //   isLiked
+    // };
+    // props.actions.changeLocation({
+    //   ...spottedPage
+    // });
   };
 
   return (
